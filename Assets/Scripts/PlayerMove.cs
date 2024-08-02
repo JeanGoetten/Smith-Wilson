@@ -4,20 +4,23 @@ public class PlayerMove : MonoBehaviour
 {
     public float moveSpeed = 5f;          // Velocidade de movimenta��o
     public float jumpForce = 5f;          // Força do pulo
-    //public float mouseSensitivity = 100f; // Sensibilidade do mouse para rotação da camera
-    //public Transform cameraTransform;     // Transform da c�mera
+    public float mouseSensitivity = 100f; // Sensibilidade do mouse para rotação da camera
+    public Transform cameraTransform;     // Transform da c�mera
 
     private Rigidbody rb;
-    //private float xRotation = 0f;
+    private float xRotation = 0f;
     private bool isGrounded;
 
-    //float mouseX;
-    //float mouseY;
+    float mouseX;
+    float mouseY;
+
+    public float camMinInclination = 0;
+    public float camMaxInclination = 0; 
 
     private void Awake()
     {
-        //mouseX = 20f;
-        //mouseY = 0f;
+        mouseX = 20f;
+        mouseY = 0f;
     }
 
     void Start()
@@ -29,9 +32,9 @@ public class PlayerMove : MonoBehaviour
     void Update()
     {
         Move();
-        //RotateCamera();
+        RotateCamera();
 
-        //cameraTransform.localPosition = new Vector3(0f, 11f, -10f);
+        cameraTransform.localPosition = new Vector3(0f, 1f, 0f);
 
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
@@ -51,18 +54,18 @@ public class PlayerMove : MonoBehaviour
     }
 
 
-    //private void RotateCamera()
-    //{
-    //    mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-    //    mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+    private void RotateCamera()
+    {
+        mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+        mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
-    //    xRotation -= mouseY;
-    //    xRotation = Mathf.Clamp(xRotation, 20, 50);
+        xRotation -= mouseY;
+        xRotation = Mathf.Clamp(xRotation, camMinInclination, camMaxInclination);
 
-    //    cameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-    //    transform.Rotate(Vector3.up * mouseX);
+        cameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        transform.Rotate(Vector3.up * mouseX);
 
-    //}
+    }
 
     private void Jump()
     {
