@@ -15,7 +15,9 @@ public class PlayerMove : MonoBehaviour
     float mouseY;
 
     public float camMinInclination = 0;
-    public float camMaxInclination = 0; 
+    public float camMaxInclination = 0;
+
+    private Quaternion targetRotation; // Rotação alvo do personagem
 
     private void Awake()
     {
@@ -27,12 +29,14 @@ public class PlayerMove : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked; // Trava o cursor no meio da tela
+
+        targetRotation = transform.rotation; // Define a rotação inicial
     }
 
     void Update()
     {
         Move();
-        RotateCamera();
+        //RotateCamera();
 
         cameraTransform.localPosition = new Vector3(0f, 1f, 0f);
 
@@ -44,13 +48,47 @@ public class PlayerMove : MonoBehaviour
 
     private void Move()
     {
-        float moveX = Input.GetAxis("Horizontal"); // Pega o input das teclas A e D
-        float moveZ = Input.GetAxis("Vertical");   // Pega o input das teclas W e S
+        float moveHorizontal = Input.GetAxis("Horizontal"); // Captura as teclas A e D
+        float moveVertical = Input.GetAxis("Vertical"); // Captura as teclas W e S
 
-        Vector3 move = transform.right * moveX + transform.forward * moveZ;
-        move = move.normalized; // Normaliza o vetor de movimento para evitar velocidade maior na diagonal
+        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
 
-        rb.AddForce(move * moveSpeed, ForceMode.Acceleration);
+        // Verifica se o Shift está sendo pressionado para aumentar a velocidade
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+        {
+            movement *= 2;
+        }
+
+        transform.Translate(movement * moveSpeed * Time.deltaTime, Space.World);
+
+        // Ajusta a rotação com base na tecla pressionada
+        if (Input.GetKey(KeyCode.W))
+        {
+            targetRotation = Quaternion.Euler(0, 0, 0);
+        }
+        else if (Input.GetKey(KeyCode.A))
+        {
+            targetRotation = Quaternion.Euler(0, -90, 0);
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            targetRotation = Quaternion.Euler(0, 90, 0);
+        }
+        else if (Input.GetKey(KeyCode.S))
+        {
+            // Verifica a direção atual e ajusta a rotação para S
+            if (transform.rotation.eulerAngles.y == 90)
+            {
+                targetRotation = Quaternion.Euler(0, 170, 0);
+            }
+            else if (transform.rotation.eulerAngles.y == -90)
+            {
+                targetRotation = Quaternion.Euler(0, -170, 0);
+            }
+        }
+
+        // Aplica a rotação ao personagem
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * moveSpeed);
     }
 
 

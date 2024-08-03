@@ -41,10 +41,14 @@ public class PlayerAttack : MonoBehaviour
         if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && anim.GetCurrentAnimatorStateInfo(0).IsName("Hit02"))
         {
             anim.SetBool("hit02", false);
+            cam01.SetActive(true);
+            cam02.SetActive(false);
         }
         if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && anim.GetCurrentAnimatorStateInfo(0).IsName("Hit03"))
         {
             anim.SetBool("hit03", false);
+            cam01.SetActive(true);
+            cam02.SetActive(false);
             noOfClicks = 0;
         }
 
@@ -73,12 +77,12 @@ public class PlayerAttack : MonoBehaviour
 
     void OnClick()
     {
-        cam01.SetActive(false);
-        cam02.SetActive(true);
         lastClickedTime = Time.time;
         noOfClicks++;
         if (noOfClicks == 1 && anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1)
         {
+            cam01.SetActive(false);
+            cam02.SetActive(true);
             anim.SetBool("hit01", true);
             au.PlayOneShot(clipList[0]);
         }
@@ -86,12 +90,16 @@ public class PlayerAttack : MonoBehaviour
 
         if (noOfClicks >= 2 && anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && anim.GetCurrentAnimatorStateInfo(0).IsName("Hit01"))
         {
+            cam01.SetActive(false);
+            cam02.SetActive(true);
             anim.SetBool("hit01", false);
             anim.SetBool("hit02", true);
             au.PlayOneShot(clipList[1]);
         }
         if (noOfClicks >= 3 && anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && (anim.GetCurrentAnimatorStateInfo(0).IsName("Hit02") || anim.GetCurrentAnimatorStateInfo(0).IsName("New State")))
         {
+            cam01.SetActive(false);
+            cam02.SetActive(true);
             anim.SetBool("hit02", false);
             anim.SetBool("hit03", true);
             au.PlayOneShot(clipList[2]);
