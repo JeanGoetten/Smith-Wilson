@@ -3373,12 +3373,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f996f2b48123b240ab43ecae31004f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cooldownTime: 0.8
+  cooldownTime: 1.1
   nextFireTime: 0
   lastClickedTime: 0
-  maxComboDelay: 1
+  maxComboDelay: 0
   clipList:
   - {fileID: 8300000, guid: b1770dbc1ebdaa64e9d85300a9280859, type: 3}
+  cam01: {fileID: 330585543}
+  cam02: {fileID: 996563780}
 --- !u!95 &1523547907
 Animator:
   serializedVersion: 5
