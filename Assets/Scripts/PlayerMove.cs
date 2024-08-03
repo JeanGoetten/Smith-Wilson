@@ -85,6 +85,10 @@ public class PlayerMove : MonoBehaviour
             {
                 targetRotation = Quaternion.Euler(0, -170, 0);
             }
+            else
+            {
+                targetRotation = Quaternion.Euler(0, 170, 0);
+            }
         }
 
         // Aplica a rotação ao personagem
