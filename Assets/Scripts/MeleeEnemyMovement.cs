@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class MeleeEnemyMovement : MonoBehaviour
 {
@@ -19,6 +20,9 @@ public class MeleeEnemyMovement : MonoBehaviour
     private bool chasingPlayer = false;
     private Transform player;
 
+    private AudioSource au;
+    public List<AudioClip> clips; 
+
     private void Start()
     {
         initialPosition = transform.position;
@@ -37,8 +41,10 @@ public class MeleeEnemyMovement : MonoBehaviour
             pointC += new Vector3(0, 0, patrolLengthZ / 2);
         }
 
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        player = GameObject.FindGameObjectWithTag("Player").transform; 
         StartCoroutine(Patrol());
+
+        au = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -54,24 +60,24 @@ public class MeleeEnemyMovement : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(waitTime);
-            yield return MoveToPosition(pointC);
+            yield return MoveToPosition(pointC, patrolSpeed);
             yield return new WaitForSeconds(waitTime);
-            yield return MoveToPosition(pointB);
+            yield return MoveToPosition(pointB, patrolSpeed);
             yield return new WaitForSeconds(waitTime);
             yield return LookAround();
-            yield return MoveToPosition(pointA);
+            yield return MoveToPosition(pointA, patrolSpeed);
             yield return new WaitForSeconds(waitTime);
-            yield return MoveToPosition(pointB);
+            yield return MoveToPosition(pointB, patrolSpeed);
             yield return new WaitForSeconds(waitTime);
             yield return LookAround();
         }
     }
 
-    private IEnumerator MoveToPosition(Vector3 target)
+    private IEnumerator MoveToPosition(Vector3 target, float speed)
     {
         while (Vector3.Distance(transform.position, target) > 0.1f && !chasingPlayer)
         {
-            transform.position = Vector3.MoveTowards(transform.position, target, patrolSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
             Vector3 direction = (target - transform.position).normalized;
             transform.rotation = Quaternion.LookRotation(direction);
             yield return null;
@@ -100,8 +106,9 @@ public class MeleeEnemyMovement : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            au.PlayOneShot(clips[0]); 
             chasingPlayer = true;
-            StopCoroutine(Patrol());
+            StopAllCoroutines(); 
         }
     }
 
@@ -116,8 +123,15 @@ public class MeleeEnemyMovement : MonoBehaviour
 
     private IEnumerator ReturnToPatrol()
     {
-        Vector3 target = (Vector3.Distance(transform.position, pointA) < Vector3.Distance(transform.position, pointC)) ? pointA : pointC;
-        yield return MoveToPosition(target);
-        yield return Patrol();
+        Vector3 target = pointA;
+        while (Vector3.Distance(transform.position, target) > 0.1f)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, target, patrolSpeed * Time.deltaTime);
+            Vector3 direction = (target - transform.position).normalized;
+            transform.rotation = Quaternion.LookRotation(direction);
+            yield return null;
+        }
+        transform.position = target;
+        StartCoroutine(Patrol());
     }
 }

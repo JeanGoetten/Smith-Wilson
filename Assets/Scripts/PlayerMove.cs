@@ -38,7 +38,7 @@ public class PlayerMove : MonoBehaviour
         Move();
         //RotateCamera();
 
-        cameraTransform.localPosition = new Vector3(0f, 1f, 0f);
+        cameraTransform.localPosition = new Vector3(0f, 2f, -2f);
 
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {

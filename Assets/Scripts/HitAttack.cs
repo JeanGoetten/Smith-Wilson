@@ -24,7 +24,7 @@ public class HitAttack : MonoBehaviour
             // Reproduz o efeito visual
             if (hitEffect != null)
             {
-                Instantiate(hitEffect, other.transform.position, Quaternion.identity);
+                Instantiate(hitEffect, new Vector3(other.transform.position.x, other.transform.position.y + 1f, other.transform.position.z), Quaternion.identity);
             }
 
             // Destroi o objeto com a tag "Enemies"
