@@ -49,8 +49,9 @@ public class MeleeEnemyMovement : MonoBehaviour
 
     private void Update()
     {
-        if (chasingPlayer)
+        if (chasingPlayer && player != null)
         {
+            Debug.Log(player); 
             ChasePlayer();
         }
     }

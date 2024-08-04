@@ -6,6 +6,8 @@ public class HitAttack : MonoBehaviour
     public AudioClip hitSound; // Som do impacto
     private AudioSource audioSource;
 
+    public string targetTag; 
+
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
@@ -13,7 +15,7 @@ public class HitAttack : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Enemies"))
+        if (other.CompareTag(targetTag))
         {
             // Reproduz o som do impacto
             if (hitSound != null && audioSource != null)
@@ -27,7 +29,7 @@ public class HitAttack : MonoBehaviour
                 Instantiate(hitEffect, new Vector3(other.transform.position.x, other.transform.position.y + 1f, other.transform.position.z), Quaternion.identity);
             }
 
-            // Destroi o objeto com a tag "Enemies"
+            // Destroi o objeto alvo
             Destroy(other.gameObject);
         }
     }
