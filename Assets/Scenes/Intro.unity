@@ -993,6 +993,7 @@ MonoBehaviour:
   clips:
   - {fileID: 8300000, guid: 626d7211bc9c5b145b5bc6ffd14c569f, type: 3}
   - {fileID: 8300000, guid: 14518c2f8adafc340a50ee32ef55b5f1, type: 3}
+  nextScene: {fileID: 1151773261}
 --- !u!1 &1506824898
 GameObject:
   m_ObjectHideFlags: 0

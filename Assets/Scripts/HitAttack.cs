@@ -31,6 +31,15 @@ public class HitAttack : MonoBehaviour
 
             // Destroi o objeto alvo
             Destroy(other.gameObject);
+
+            if (targetTag == "Player")
+            {
+                ActionSceneManager.neoIsAlive = false;
+            }
+            if (targetTag == "Enemies")
+            {
+                ActionSceneManager.smithSafe = false;
+            }
         }
     }
 }
