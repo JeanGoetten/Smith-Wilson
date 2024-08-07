@@ -7,16 +7,18 @@ public class UIController : MonoBehaviour
 {
     public ActionSceneManager sceneManager;
 
-    private Animator anim; 
+    private Animator anim;
+
+    
 
     private void Start()
     {
-
         anim = GetComponent<Animator>();
     }
 
     public void Update()
     {
+        
         if (!ActionSceneManager.neoIsAlive)
         {
             anim.SetTrigger("neoDeath"); 

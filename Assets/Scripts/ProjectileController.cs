@@ -35,10 +35,15 @@ public class ProjectileController : MonoBehaviour
             Instantiate(impactEffect, transform.position, transform.rotation);
         }
 
-        // Destrói o jogador ou o inimigo se o projétil colidir com eles
-        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Enemies"))
+        if (collision.gameObject.CompareTag("Player"))
         {
-            Destroy(collision.gameObject); // Destrói o jogador ou inimigo se atingido
+            ActionSceneManager.neoIsAlive = false;
+            Destroy(collision.gameObject); // Destrói o jogador se atingido
+        }
+        if (collision.gameObject.CompareTag("Enemies"))
+        {
+            ActionSceneManager.smithSafe = false;
+            Destroy(collision.gameObject); // Destrói o inimigo se atingido
         }
 
         // Destrói o projétil após o impacto
