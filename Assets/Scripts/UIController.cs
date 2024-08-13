@@ -9,6 +9,7 @@ public class UIController : MonoBehaviour
 
     private Animator anim;
 
+    public string nextScene; 
     
 
     private void Start()
@@ -27,6 +28,10 @@ public class UIController : MonoBehaviour
         {
             anim.SetTrigger("smithDeath");
         }
+        if (!BossController.bossIsAlive)
+        {
+            anim.SetTrigger("bossDeath");
+        }
     }
     private void LateUpdate()
     {
@@ -36,5 +41,9 @@ public class UIController : MonoBehaviour
     public void RestartScene()
     {
         sceneManager.RestartScene();
+    }
+    public void NextScene()
+    {
+        sceneManager.NextScene(nextScene);
     }
 }
